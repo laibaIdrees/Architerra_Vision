@@ -20,3 +20,14 @@ jobs:
 
     - name: Flutter Pub Get
       run: flutter pub get
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '14'  # or the version compatible with SpectralOps
+
+    - name: Install SpectralOps SAST tool
+      run: npm install -g spectralops
+
+    - name: Run SpectralOps SAST tool
+      run: spectralops analyze
