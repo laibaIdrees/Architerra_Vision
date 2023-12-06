@@ -1,4 +1,4 @@
-name: Flutter Docker Workflow
+name: CI/CD Pipeline
 
 on:
   push:
@@ -6,7 +6,36 @@ on:
       - main
 
 jobs:
-  flutter-docker-job:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Build Project
+      run: |
+        # Add your build commands here
+        flutter pub get
+        flutter build apk --release
+
+  static-analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Install semgrep
+      run: |
+        curl -L https://github.com/returntocorp/semgrep/releases/latest/download/semgrep_linux -o semgrep
+        chmod +x semgrep
+        sudo mv semgrep /usr/local/bin
+
+    - name: Run Static Analysis
+      run: semgrep -e "your_semgrep_rules_here" .
+
+  build-docker:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,10 +43,25 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up Docker
-      uses: docker/setup-buildx-action@v1
+      uses: docker/setup-docker@v2
 
-    - name: Build Flutter Docker Image
+    - name: Build Docker Image
       run: docker build . --file Dockerfile --tag my-flutter-app:latest
 
-    - name: Run Flutter App in Docker
-      run: docker run my-flutter-app
+  deploy-to-kubernetes:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v1
+      with:
+        version: 'latest'
+
+    - name: Configure Kubernetes context
+      run: kubectl config use-context your_kubernetes_context_name
+
+    - name: Deploy to Kubernetes
+      run: kubectl apply -f your_kubernetes_manifest_file.yaml
