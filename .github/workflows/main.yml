@@ -31,8 +31,8 @@ jobs:
 
     - name: Run DockerFile
       run: |
-        docker build -t ArchiterraVisiion:latest .
-        docker run -it --rm ArchiterraVisiion:latest
+        docker build -t architerravisiion:latest .
+        docker run -it --rm architerravisiion:latest
 
 
     - name: Deploy to cloud Kubernetes cluster
