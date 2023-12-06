@@ -11,8 +11,18 @@ COPY pubspec.lock pubspec.lock
 # Install dependencies
 RUN flutter pub get
 
+# Add debug prints to troubleshoot
+RUN echo "Listing files in /app:"
+RUN ls -la
+RUN echo "Listing files in /app/lib:"
+RUN ls -la lib
+
 # Copy the entire project to the container
 COPY . .
+
+# Add debug prints after copying the project
+RUN echo "Listing files after copying the project:"
+RUN ls -la
 
 # Build the Flutter app
 RUN flutter build apk --release
