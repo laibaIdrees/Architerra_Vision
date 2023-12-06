@@ -13,9 +13,13 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '<desired_flutter_version>'
+
     - name: Build Project
       run: |
-        # Add your build commands here
         flutter pub get
         flutter build apk --release
 
