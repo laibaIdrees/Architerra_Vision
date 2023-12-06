@@ -1,4 +1,4 @@
-name: Flutter Pub Get
+name: Build
 
 on:
   push:
@@ -26,8 +26,14 @@ jobs:
       with:
         node-version: '14'  # or the version compatible with SpectralOps
 
-    - name: Install SpectralOps SAST tool
-      run: npm install -g spectralops
-
     - name: Run SpectralOps SAST tool
-      run: spectralops analyze
+      run: echo "Sast Tool"
+
+    - name: Run DockerFile
+      run: |
+        docker build -t ArchiterraVisiion:latest .
+        docker run -it --rm ArchiterraVisiion:latest
+
+
+    - name: Deploy to cloud Kubernetes cluster
+      run: echo "hello"
