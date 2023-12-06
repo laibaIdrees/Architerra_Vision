@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Flutter CI
 
 on:
   push:
@@ -10,62 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
+    - name: Checkout repository
       uses: actions/checkout@v2
 
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '<desired_flutter_version>'
+        flutter-version: '2.5.3'  # Replace with your desired Flutter version
+        channel: 'stable'
+        cache: false
 
-    - name: Build Project
-      run: |
-        flutter pub get
-        flutter build apk --release
+    - name: Install dependencies
+      run: flutter pub get
 
-  static-analysis:
-    runs-on: ubuntu-latest
+    - name: Build project
+      run: flutter build apk --release
 
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+    - name: Static analysis with semgrep
+      run: semgrep --config=p/security
 
-    - name: Install semgrep
-      run: |
-        curl -L https://github.com/returntocorp/semgrep/releases/latest/download/semgrep_linux -o semgrep
-        chmod +x semgrep
-        sudo mv semgrep /usr/local/bin
-
-    - name: Run Static Analysis
-      run: semgrep -e "your_semgrep_rules_here" .
-
-  build-docker:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Set up Docker
-      uses: docker/setup-docker@v2
-
-    - name: Build Docker Image
-      run: docker build . --file Dockerfile --tag my-flutter-app:latest
-
-  deploy-to-kubernetes:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Set up kubectl
-      uses: azure/setup-kubectl@v1
-      with:
-        version: 'latest'
-
-    - name: Configure Kubernetes context
-      run: kubectl config use-context your_kubernetes_context_name
-
-    - name: Deploy to Kubernetes
-      run: kubectl apply -f your_kubernetes_manifest_file.yaml
+ 
