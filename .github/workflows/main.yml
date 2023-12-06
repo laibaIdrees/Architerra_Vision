@@ -1,4 +1,4 @@
-name: Flutter CI
+name: Flutter Login CI/CD
 
 on:
   push:
@@ -10,23 +10,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set up Flutter
+    - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '2.5.3'  # Replace with your desired Flutter version
-        channel: 'stable'
+        flutter-version: '<desired_flutter_version>'
+        channel: stable
         cache: false
+        cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:
+        cache-path: /opt/hostedtoolcache/flutter/:channel:-:version:-:arch:
+        architecture: X64
 
-    - name: Install dependencies
+    - name: Install Dependencies
       run: flutter pub get
 
-    - name: Build project
+    - name: Build Project
       run: flutter build apk --release
 
-    - name: Static analysis with semgrep
-      run: semgrep --config=p/security
+    - name: Perform Static Analysis
+      run: flutter analyze
 
- 
+    - name: Build Docker Image
+      run: |
+        docker build -t your_docker_image_name:latest .
+        docker tag your_docker_image_name:latest your_docker_registry/your_docker_image_name:latest
+
+    - name: Push Docker Image
+      run: docker push your_docker_registry/your_docker_image_name:latest
+
+    - name: Deploy to Kubernetes
+      # Add your deployment steps here
+      # ...
