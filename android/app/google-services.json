@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "60836803963",
+    "project_id": "architerravisions-fyp",
+    "storage_bucket": "architerravisions-fyp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60836803963:android:46982df03d236c253179de",
+        "android_client_info": {
+          "package_name": "com.example.flutter_login"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL9TM8z0vmXZIbP9-qDjMTakgQBPBJiI4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
