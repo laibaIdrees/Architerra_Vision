@@ -8,8 +8,6 @@ WORKDIR /app
 COPY pubspec.yaml pubspec.yaml
 COPY pubspec.lock pubspec.lock
 
-# Install dependencies
-RUN flutter pub get
 
 # Add debug prints to troubleshoot
 RUN echo "Listing files in /app:"
