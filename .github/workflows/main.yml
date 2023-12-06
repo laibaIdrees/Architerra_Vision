@@ -1,18 +1,22 @@
-name: Build
+name: Flutter Pub Get
 
 on:
   push:
     branches:
-      - main
+      - main  # Change this to your main branch
 
 jobs:
-  hello-job:
+  build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Display Hello
-      run: echo "flutter pub run"
-      
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.3'  # Adjust to your Flutter version
+
+    - name: Flutter Pub Get
+      run: flutter pub get
