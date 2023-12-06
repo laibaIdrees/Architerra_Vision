@@ -1,4 +1,4 @@
-name: Simple Workflow
+name: Flutter Docker Workflow
 
 on:
   push:
@@ -6,12 +6,18 @@ on:
       - main
 
 jobs:
-  hello-job:
+  flutter-docker-job:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Display Hello
-      run: echo "hello"
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build Flutter Docker Image
+      run: docker build . --file Dockerfile --tag my-flutter-app:latest
+
+    - name: Run Flutter App in Docker
+      run: docker run my-flutter-app
